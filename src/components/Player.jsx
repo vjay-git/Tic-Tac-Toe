@@ -1,35 +1,43 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react';
 import Button from './Button';
-function Player({InitialName,PlayerSymbol}) 
-{
-  const [isName,setIsName] = useState(InitialName)
-  const[isEditing,setIsEditing] = useState(false)
-   function ChangeName(event)
-  {
+
+function Player({ InitialName, PlayerSymbol, isActive }) {
+  const [isName, setIsName] = useState(InitialName);
+  const [isEditing, setIsEditing] = useState(false);
+
+  function ChangeName(event) {
     setIsName(event.target.value);
-  } 
-  function Change()
-  {
-    setIsEditing((isEditing)=>!isEditing);
   }
 
-  let playerName;
-  {(isEditing)?playerName=
-    <span className="player-name"> {isName}</span>
-    :playerName=<input type='text' placeholder="Player Name" defaultValue="" onChange={ChangeName}></input>}
-    let State = (isEditing)?"Edit":"Save";
-    return (     
-      <> 
-      <li>
+  function Change() {
+    setIsEditing((editing) => !editing);
+  }
+
+  let playerName = <span className="player-name">{isName}</span>;
+
+  if (isEditing) {
+    playerName = (
+      <input
+        type="text"
+        placeholder="Player Name"
+        required
+        value={isName}
+        onChange={ChangeName}
+      />
+    );
+  }
+
+  const stateLabel = isEditing ? 'Save' : 'Edit';
+
+  return (
+    <li className={isActive ? 'active' : undefined}>
       <span className="player">
-      {playerName}
-      <span className="player-symbol">{PlayerSymbol}</span>
+        {playerName}
+        <span className="player-symbol">{PlayerSymbol}</span>
       </span>
-      <Button onSelect={Change}>{State}</Button>
-      </li>
-      </>
-     
-  )
+      <Button onSelect={Change}>{stateLabel}</Button>
+    </li>
+  );
 }
 
-export default Player
+export default Player;
