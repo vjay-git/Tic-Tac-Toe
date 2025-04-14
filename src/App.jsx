@@ -10,16 +10,13 @@ const InitialGameBoard = [
   [null, null, null],
   [null, null, null],
 ];
-function Rematch()
-{
-  Ini
-}
+
 function App() {
   const [gameTurns, setGameTurns] = useState([]);
   const [activePlayer, setActivePlayer] = useState('X');
 
   // Make a deep copy of the game board to update based on turns
-  const gameBoard = InitialGameBoard.map(row => [...row]);
+  const gameBoard = [...InitialGameBoard].map(innerArray => [...innerArray]);
   for (const turn of gameTurns) {
     const { square, player } = turn;
     gameBoard[square.row][square.col] = player;
@@ -53,6 +50,10 @@ function App() {
 
     setActivePlayer(curr => (curr === 'X' ? 'O' : 'X'));
   }
+  function Rematch()
+{
+  setGameTurns([]);
+}
 
   return (
     <main>
@@ -62,7 +63,7 @@ function App() {
           <Player InitialName="Player 2" PlayerSymbol="O" isActive={activePlayer === 'O'} />
         </ol>
 
-        {(winner || hasDraw) && <GameOver winner ={winner}/>}
+        {(winner || hasDraw) && <GameOver winner ={winner} onRestart ={Rematch}/>}
 
         <GameBoard onSelectSquare={handleSelectSquare} turns={gameTurns} />
       </div>
